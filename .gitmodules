@@ -1,0 +1,6 @@
+[submodule "libs/physfs"]
+	path = libs/physfs
+	url = https://github.com/icculus/physfs.git
+[submodule "libs/pybind11"]
+	path = libs/pybind11
+	url = https://github.com/pybind/pybind11.git
