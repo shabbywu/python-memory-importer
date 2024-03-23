@@ -10,6 +10,7 @@ class PhysfsImporter {
     public:
         py::object ModuleSpecClass;
         py::object ModuleClass;
+        py::bool_ debug;
 
         PhysfsImporter() {
             ModuleSpecClass = py::module_::import("importlib.machinery").attr("ModuleSpec");
@@ -22,8 +23,8 @@ class PhysfsImporter {
         // PEP-451 finder.find_spec() method for the ``sys.meta_path`` hook.
 
         // fullname     fully qualified name of the module
-        // path         None for a top-level module, or package.__path__ for
-        //              submodules or subpackages.
+        // path         None for a top-level module, or [package.__path__] or  _NamespacePath for
+        //              submodules or subpackages. unused by this Finder
         // target       unused by this Finder
 
         // Finders are still responsible for identifying, and typically creating, the loader that should be used to load a
@@ -34,7 +35,7 @@ class PhysfsImporter {
         // Finders must return ModuleSpec objects when find_spec() is called. This new method replaces find_module() and
         // find_loader() (in the PathEntryFinder case). If a loader does not have find_spec(), find_module() and
         // find_loader() are used instead, for backward-compatibility.
-        py::object find_spec(py::str fullname, std::optional<py::list> path, std::optional<py::object> target);
+        py::object find_spec(py::str fullname, std::optional<py::object> path, std::optional<py::object> target);
 
         // PEP-451 loader.create_module() method for the ``sys.meta_path`` hook.
 
