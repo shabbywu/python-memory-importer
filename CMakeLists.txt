@@ -22,6 +22,8 @@ else()
   list(APPEND VCPKG_MANIFEST_FEATURES "without-python3")
 endif()
 
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/.vcpkg/ports")
+
 project ("python-memory-importer")
 
 set(CMAKE_CXX_STANDARD 17)
