@@ -2,7 +2,7 @@ from memory_importer import PhysfsImporter
 
 
 def test(basedir):
-    i = PhysfsImporter(basedir + "assets/py.zip")
+    i = PhysfsImporter(str(basedir / "assets" / "py.zip"))
     import module
 
     assert module.part1.flag() == "part1", "part1 is loaded"

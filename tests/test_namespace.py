@@ -5,7 +5,7 @@ from memory_importer import PhysfsImporter
 
 
 def test(basedir):
-    i = PhysfsImporter(basedir + "assets/py.zip")
+    i = PhysfsImporter(str(basedir / "assets" / "py.zip"))
     from module import namespace
 
     assert "part3" not in namespace.__dict__, "lazy part will not auto import"

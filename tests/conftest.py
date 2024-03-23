@@ -2,6 +2,7 @@ import pytest
 import sys
 from memory_importer import physfs
 from memory_importer import PhysfsImporter
+from pathlib import Path
 
 
 @pytest.fixture(autouse=True)
@@ -30,4 +31,4 @@ def basedir():
         value = ""
     else:
         value += "/"
-    return value
+    return Path(value)
