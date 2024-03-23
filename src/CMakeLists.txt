@@ -10,8 +10,11 @@ endif()
 find_package(pybind11 CONFIG)
 find_package(PhysFS CONFIG REQUIRED)
 
+# 指定 PhysFS 编译参数
+target_compile_options(PhysFS::PhysFS-static PRIVATE -fPIC)
 
-set(MODULE_SOURCE main.cpp 
+
+set(MODULE_SOURCE main.cpp
   physfs.shim.cpp physfs.shim.h
   importer.cpp importer.h
   )
@@ -22,11 +25,11 @@ if(VERSION_INFO)
   target_compile_definitions(memory-importer PRIVATE VERSION_INFO=${VERSION_INFO})
 endif()
 
-target_include_directories(memory-importer PUBLIC 
+target_include_directories(memory-importer PUBLIC
   ${PHYSFS_INCLUDE_DIR}
 )
-target_link_libraries(memory-importer PRIVATE 
-  $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static> 
+target_link_libraries(memory-importer PRIVATE
+  $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>
   pybind11::pybind11
 )
 set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
@@ -35,7 +38,7 @@ set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
 # set(STATIC_SOURCE shim.cpp shim.h)
 # pybind11_add_module(memory-importer-static STATIC NO_EXTRAS ${MODULE_SOURCE})
 # set_property(TARGET memory-importer-static PROPERTY CXX_STANDARD 17)
-# target_include_directories(memory-importer-static PUBLIC 
+# target_include_directories(memory-importer-static PUBLIC
 #   ${CMAKE_CURRENT_SOURCE_DIR}/../libs/pybind11/include
 #   ${CMAKE_CURRENT_SOURCE_DIR}/../libs/physfs/src
 #   )
