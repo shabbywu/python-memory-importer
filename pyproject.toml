@@ -12,13 +12,24 @@ test-command = "pytest {project}/tests/"
 test-skip = "*universal2:arm64"
 
 [tool.cibuildwheel.linux]
-environment = { VCPKG_ROOT="~/.vcpkg/vcpkg", CMAKE_GENERATOR= "Unix Makefiles" }
+environment = { VCPKG_ROOT="~/.vcpkg/vcpkg", CMAKE_GENERATOR="Unix Makefiles" }
 before-all = [
   "yum install curl zip unzip tar -y",
   "mkdir ~/.vcpkg",
   "git clone https://github.com/microsoft/vcpkg.git ~/.vcpkg/vcpkg",
   "~/.vcpkg/vcpkg/bootstrap-vcpkg.sh",
 ]
+
+[[tool.cibuildwheel.overrides]]
+select = "*i686*"
+inherit.before-all = "prepend"
+before-all = [
+  "cd /tmp",
+  "curl https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz -L |tar -xzvf -",
+  "/tmp/ninja-1.11.1/configure.py --bootstrap",
+  "cp ninja /usr/bin/ninja",
+]
+
 
 [tool.ruff]
 extend-select = [

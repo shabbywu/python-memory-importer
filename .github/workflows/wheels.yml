@@ -56,7 +56,7 @@ jobs:
         CIBW_ARCHS_MACOS: auto universal2
         # Disable building PyPy wheels on all platforms
         CIBW_SKIP: pp*
-        MACOSX_DEPLOYMENT_TARGET: 10.14
+        MACOSX_DEPLOYMENT_TARGET: 11.0
 
     - name: Verify clean directory
       run: git diff --exit-code
