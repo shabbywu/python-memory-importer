@@ -21,17 +21,17 @@
 | [`cibuildwheel`][]   | [![Wheels Actions Status][actions-wheels-badge]][actions-wheels-link] |
 
 [gitter-badge]:            https://badges.gitter.im/pybind/Lobby.svg
-[stars-badge]:             https://img.shields.io/github/stars/shabbywu/memory-importer?style=social
-[actions-badge]:           https://github.com/shabbywu/memory-importer/workflows/Tests/badge.svg
-[actions-pip-link]:        https://github.com/shabbywu/memory-importer/actions?query=workflow%3A%22Pip
-[actions-pip-badge]:       https://github.com/shabbywu/memory-importer/workflows/Pip/badge.svg
-[actions-wheels-link]:     https://github.com/shabbywu/memory-importer/actions?query=workflow%3AWheels
-[actions-wheels-badge]:    https://github.com/shabbywu/memory-importer/workflows/Wheels/badge.svg
-[travis-link]:             https://travis-ci.org/shabbywu/memory-importer
-[travis-badge]:            https://travis-ci.org/shabbywu/memory-importer.svg?branch=master&status=passed
-[appveyor-link]:           https://ci.appveyor.com/project/shabbywu/memory-importer
+[stars-badge]:             https://img.shields.io/github/stars/shabbywu/python-memory-importer?style=social
+[actions-badge]:           https://github.com/shabbywu/python-memory-importer/workflows/Tests/badge.svg
+[actions-pip-link]:        https://github.com/shabbywu/python-memory-importer/actions?query=workflow%3A%22Pip
+[actions-pip-badge]:       https://github.com/shabbywu/python-memory-importer/workflows/Pip/badge.svg
+[actions-wheels-link]:     https://github.com/shabbywu/python-memory-importer/actions?query=workflow%3AWheels
+[actions-wheels-badge]:    https://github.com/shabbywu/python-memory-importer/workflows/Wheels/badge.svg
+[travis-link]:             https://travis-ci.org/shabbywu/python-memory-importer
+[travis-badge]:            https://travis-ci.org/shabbywu/python-memory-importer.svg?branch=master&status=passed
+[appveyor-link]:           https://ci.appveyor.com/project/shabbywu/python-memory-importer
 <!-- TODO: get a real badge link for appveyor -->
-[appveyor-badge]:          https://travis-ci.org/shabbywu/memory-importer.svg?branch=master&status=passed
+[appveyor-badge]:          https://travis-ci.org/shabbywu/python-memory-importer.svg?branch=master&status=passed
 [`cibuildwheel`]:          https://cibuildwheel.readthedocs.io
 
 

@@ -1,7 +1,8 @@
 {
-  "dependencies": [
-    "pybind11",
-    "python3",
-    "physfs"
-  ]
+  "name": "memory-importer",
+  "dependencies": ["pybind11", "physfs"],
+  "features": {
+    "build": { "description": "build with all dependencies", "dependencies": ["python3"]},
+    "build-without-python3": { "description": "build with minimal dependencies", "dependencies": []}
+  }
 }
