@@ -26,9 +26,4 @@ def _importer():
 
 @pytest.fixture()
 def basedir():
-    value = __file__.rsplit("/", 1)[0]
-    if value == __file__:
-        value = ""
-    else:
-        value += "/"
-    return Path(value).absolute()
+    return Path(__file__).parent
