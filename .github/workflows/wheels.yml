@@ -53,9 +53,7 @@ jobs:
 
     - uses: pypa/cibuildwheel@v2.17
       env:
-        CIBW_ARCHS_MACOS: auto universal2
-        # Disable building PyPy wheels on all platforms
-        CIBW_SKIP: pp*
+        CIBW_SKIP: pp* *_i686
         MACOSX_DEPLOYMENT_TARGET: 11.0
 
     - name: Verify clean directory
