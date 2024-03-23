@@ -1,9 +1,3 @@
-set(PHYSFS_BUILD_STATIC ON)
-set(PHYSFS_BUILD_SHARED OFF)
-set(PHYSFS_BUILD_TEST FALSE)
-set(PHYSFS_BUILD_DOCS FALSE)
-set(PHYSFS_DISABLE_INSTALL ON)
-
 if(NOT DEFINED Python_EXECUTABLE)
   find_package(Python3 COMPONENTS Development REQUIRED)
 endif()
@@ -24,8 +18,8 @@ endif()
 target_include_directories(memory-importer PUBLIC
   ${PHYSFS_INCLUDE_DIR}
 )
-target_link_libraries(memory-importer PRIVATE
-  $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>
+target_link_libraries(memory-importer PUBLIC
+  PhysFS::PhysFS-static
   pybind11::pybind11
 )
 set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
