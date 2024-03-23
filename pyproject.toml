@@ -12,7 +12,7 @@ test-skip = "*universal2:arm64"
 
 [tool.cibuildwheel.linux]
 environment = {VCPKG_ROOT="~/.vcpkg/vcpkg" }
-before-build = [
+before-all = [
   "yum install curl zip unzip tar -y",
   "mkdir ~/.vcpkg",
   "git clone https://github.com/microsoft/vcpkg.git ~/.vcpkg/vcpkg",
