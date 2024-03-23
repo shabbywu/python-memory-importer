@@ -31,4 +31,4 @@ def basedir():
         value = ""
     else:
         value += "/"
-    return Path(value)
+    return Path(value).absolute()
