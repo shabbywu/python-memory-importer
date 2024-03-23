@@ -1,7 +1,7 @@
 #include "physfs.shim.h"
 
-
 namespace py = pybind11;
+
 
 
 template<typename ... Args>
@@ -16,49 +16,93 @@ std::string string_format( const std::string& format, Args ... args )
 }
 
 
+struct PhysfsRuntimeError: std::runtime_error {
+    typedef std::runtime_error super;
+public:
+    PhysfsRuntimeError(std::string message): std::runtime_error (message) {};
+    const char * what () const throw ()
+    {
+    return super::what();
+    }
+};
+
+
+class PhysfsNotFound : public py::value_error
+{
+    std::string buf;
+    public:
+    PhysfsNotFound(std::string message) {
+        buf = "Not Found: '" + message + "'";
+    };
+    const char * what () const throw ()
+    {
+        return buf.c_str();
+    }
+};
+
+
+struct PhysfsUninitialedError : public std::exception
+{
+  const char * what () const throw ()
+  {
+    return "PHYSFS is not initialized, please call init() first";
+  }
+};
+
+
 void physfs_init() {
     if (!PHYSFS_init(NULL)) {
-        throw std::runtime_error(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
+        throw PhysfsRuntimeError(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
     }
 }
 
 
 void physfs_deinit() {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     if (!PHYSFS_deinit()) {
-        throw std::runtime_error(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
+        throw PhysfsRuntimeError(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
     }
 }
 
 
 void physfs_mount(std::string source, std::string mountPoint = "/", py::bool_ appendToPath = py::bool_(0)) {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     if (!PHYSFS_mount(source.c_str(), mountPoint.c_str(), appendToPath)) {
-        throw std::runtime_error(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
+        throw PhysfsRuntimeError(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
+    }
+}
+
+void physfs_mount_memory(py::buffer buf, std::string bufName, std::string mountPoint = "/", py::bool_ appendToPath = py::bool_(0)) {
+    if (!PHYSFS_isInit()) {
+        throw PhysfsUninitialedError();
+    }
+    auto info = buf.request();
+    if (!PHYSFS_mountMemory((const void*)info.ptr, (PHYSFS_uint64)info.itemsize * info.size, NULL, bufName.c_str(), mountPoint.c_str(), appendToPath)) {
+        throw PhysfsRuntimeError(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
     }
 }
 
 
 void physfs_unmount(std::string oldSource) {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     if (!PHYSFS_unmount(oldSource.c_str())) {
-        throw std::runtime_error(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
+        throw PhysfsRuntimeError(string_format("Failure. Reason: [%s]", PHYSFS_getLastError()));
     }
 }
 
 
 py::list enumerate_fs(std::string dir) {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     char **rc;
@@ -74,27 +118,35 @@ py::list enumerate_fs(std::string dir) {
 
 PHYSFS_Stat physfs_stat(std::string file) {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     PHYSFS_Stat stat;
 
     if(!PHYSFS_stat(file.c_str(), &stat))
     {
-        throw std::runtime_error(string_format("failed to stat. Reason [%s]", PHYSFS_getLastError()));
+        auto error_code = PHYSFS_getLastErrorCode();
+        if (error_code == PHYSFS_ERR_NOT_FOUND) {
+            throw PhysfsNotFound(file);
+        }
+        throw PhysfsRuntimeError(string_format("failed to stat. Reason [%s]", PHYSFS_getLastError()));
     }
     return stat;
 }
 
 py::bytes physfs_cat(std::string file) {
     if (!PHYSFS_isInit()) {
-        throw std::runtime_error("PHYSFS is not initialized, please call init() first");
+        throw PhysfsUninitialedError();
     }
 
     PHYSFS_File *f;
     f = PHYSFS_openRead(file.c_str());
     if (f == NULL) {
-        throw std::runtime_error(string_format("failed to open. Reason: [%s]", PHYSFS_getLastError()));
+        auto error_code = PHYSFS_getLastErrorCode();
+        if (error_code == PHYSFS_ERR_NOT_FOUND) {
+            throw PhysfsNotFound(file);
+        }
+        throw PhysfsRuntimeError(string_format("failed to open. Reason: [%s]", PHYSFS_getLastError()));
     }
 
     std::stringstream output;
@@ -106,7 +158,7 @@ py::bytes physfs_cat(std::string file) {
         rc = PHYSFS_readBytes(f, buffer, sizeof (buffer));
         if (rc == -1 ) {
             PHYSFS_close(f);
-            throw std::runtime_error(string_format("Error condition in reading. Reason: [%s]", PHYSFS_getLastError()));
+            throw PhysfsRuntimeError(string_format("Error condition in reading. Reason: [%s]", PHYSFS_getLastError()));
         }
 
         output.write(buffer, rc);
@@ -115,7 +167,7 @@ py::bytes physfs_cat(std::string file) {
             if (!PHYSFS_eof(f))
             {
                 PHYSFS_close(f);
-                throw std::runtime_error(string_format("Error condition in reading. Reason: [%s]", PHYSFS_getLastError()));
+                throw PhysfsRuntimeError(string_format("Error condition in reading. Reason: [%s]", PHYSFS_getLastError()));
             }
             PHYSFS_close(f);
             break;
@@ -129,6 +181,7 @@ void register_physfs(py::module_ &m) {
     m.doc() = R"pbdoc(
         physfs - PhysicsFS is a library to provide abstract access to various archives.
         -----------------------
+        .. currentmodule:: physfs
     )pbdoc";
 
     m.def("init", &physfs_init, R"pbdoc(
@@ -172,6 +225,17 @@ void register_physfs(py::module_ &m) {
     * \param appendToPath nonzero to append to search path, zero to prepend.
     )pbdoc", py::arg("source").none(false), py::arg("mountPoint") = "/", py::arg("appendToPath") = py::bool_(0));
 
+    m.def("mount_memory", &physfs_mount_memory, R"pbdoc(
+        Add an archive, contained in a memory buffer, to the search path.
+
+    *   \param buf Address of the memory buffer containing the archive data.
+    *   \param bufName Filename that can represent this stream.
+    *   \param mountPoint Location in the interpolated tree that this archive
+    *                     will be "mounted", in platform-independent notation.
+    *                     NULL or "" is equivalent to "/".
+    *   \param appendToPath nonzero to append to search path, zero to prepend.
+    )pbdoc", py::arg("buf").none(false), py::arg("bufName").none(false), py::arg("mountPoint") = "/", py::arg("appendToPath") = py::bool_(0));
+
     m.def("unmount", &physfs_unmount, R"pbdoc(
         Remove a directory or archive from the search path.
 
@@ -180,7 +244,7 @@ void register_physfs(py::module_ &m) {
     *
     * This call will fail (and fail to remove from the path) if the element still
     *  has files open in it.
-    * 
+    *
     * \param oldSource dir/archive to remove.
 
     )pbdoc", py::arg("oldSource").none(false));
@@ -212,4 +276,8 @@ void register_physfs(py::module_ &m) {
         .value("PHYSFS_FILETYPE_SYMLINK", PHYSFS_FileType::PHYSFS_FILETYPE_SYMLINK)
         .value("PHYSFS_FILETYPE_OTHER", PHYSFS_FileType::PHYSFS_FILETYPE_OTHER);
 
+
+    py::register_exception<PhysfsRuntimeError>(m, "PhysfsRuntimeError");
+    py::register_exception<PhysfsNotFound>(m, "PhysfsNotFound");
+    py::register_exception<PhysfsUninitialedError>(m, "PhysfsUninitialedError");
 }

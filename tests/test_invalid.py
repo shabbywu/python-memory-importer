@@ -3,10 +3,4 @@ from memory_importer import PhysfsImporter
 
 def test(basedir):
     i = PhysfsImporter(basedir + "assets/py.zip")
-    import single
-    assert single.flag() == "single"
-
-
-
-if __name__ == "__main__":
-    test()
+    assert i.find_spec("Readme", None, None) is None, "Readme's ext is '.md'"

@@ -52,7 +52,7 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
                     info = physfs.stat(module_path + ext)
                     realpath = module_path + ext
                     break
-                except RuntimeError:
+                except physfs.PhysfsNotFound:
                     continue
             else:
                 raise ValueError("not a module in physfs")
@@ -63,7 +63,7 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
                         realpath = module_path + "/__init__" + ext
                         is_package = True
                         break
-                    except RuntimeError:
+                    except physfs.PhysfsNotFound:
                         continue
                 else:
                     is_package = True
