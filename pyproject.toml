@@ -10,6 +10,15 @@ test-requires = ["pytest"]
 test-command = "pytest {project}/tests/"
 test-skip = "*universal2:arm64"
 
+[tool.cibuildwheel.linux]
+environment = {VCPKG_ROOT="~/.vcpkg/vcpkg" }
+before-build = [
+  "yum install curl zip unzip tar -y",
+  "mkdir ~/.vcpkg",
+  "git clone https://github.com/microsoft/vcpkg.git ~/.vcpkg/vcpkg",
+  "~/.vcpkg/vcpkg/bootstrap-vcpkg.sh",
+]
+
 [tool.ruff]
 extend-select = [
   "B",   # flake8-bugbear
