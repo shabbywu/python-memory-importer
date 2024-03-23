@@ -1,5 +1,5 @@
 <div align="center">
-  💾📦 
+  💾⤵
 </div>
 <h1 align="center">
   Memory-Importer
@@ -13,12 +13,12 @@
 ---
 ![github-stars][stars-badge]
 
-|      CI              | status |
-|----------------------|--------|
-| Linux/macOS Travis   | [![Travis-CI][travis-badge]][travis-link] |
-| MSVC 2019            | [![AppVeyor][appveyor-badge]][appveyor-link] |
-| pip builds           | [![Pip Actions Status][actions-pip-badge]][actions-pip-link] |
-| [`cibuildwheel`][]   | [![Wheels Actions Status][actions-wheels-badge]][actions-wheels-link] |
+| CI                 | status                                                                |
+| ------------------ | --------------------------------------------------------------------- |
+| Linux/macOS Travis | [![Travis-CI][travis-badge]][travis-link]                             |
+| MSVC 2019          | [![AppVeyor][appveyor-badge]][appveyor-link]                          |
+| pip builds         | [![Pip Actions Status][actions-pip-badge]][actions-pip-link]          |
+| [`cibuildwheel`][] | [![Wheels Actions Status][actions-wheels-badge]][actions-wheels-link] |
 
 [gitter-badge]:            https://badges.gitter.im/pybind/Lobby.svg
 [stars-badge]:             https://img.shields.io/github/stars/shabbywu/python-memory-importer?style=social
