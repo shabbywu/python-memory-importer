@@ -49,9 +49,9 @@ Features
 
 `memory-importer` implement a class called **PhysfsImporter** follow the `finder` and `loader` protocol which are proposed by [PEP-451](https://peps.python.org/pep-0451/).
 
-After append `PhysfsImporter` into **sys.meta_path**, You can load import any pure python code from an archive.
+After append `PhysfsImporter` into **sys.meta_path**, You can import any pure python code from an archive stored in memory( or dicks).
 
-> PhysfsImporter use `physfs.py` to easy visit entry in achieve.
+> PhysfsImporter use `physfs.py` to easily visit entry in achieve.
 
 
 Test call
