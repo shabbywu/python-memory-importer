@@ -22,7 +22,7 @@ else()
   list(APPEND VCPKG_MANIFEST_FEATURES "without-python3")
 endif()
 
-set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/.vcpkg/ports")
+set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/.vcpkg/physfs")
 
 project ("python-memory-importer")
 
