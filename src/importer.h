@@ -9,14 +9,10 @@ namespace py = pybind11;
 class PhysfsImporter {
     public:
         py::object ModuleSpecClass;
-        py::object ModuleClass;
         py::bool_ debug;
 
         PhysfsImporter() {
             ModuleSpecClass = py::module_::import("importlib.machinery").attr("ModuleSpec");
-            // A trick in python, new module by calling `type(sys)(module_name)`
-            // ref: https://github.com/python/cpython/blob/main/Lib/importlib/_bootstrap.py#L48
-            ModuleClass = py::type::of(py::module_::import("sys"));
         }
         PhysfsImporter(std::string archiveFilePath);
 

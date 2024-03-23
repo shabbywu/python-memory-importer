@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 
 PhysfsImporter:: PhysfsImporter(std::string archiveFilePath) {
-    // TODO: use physfs memory archive
+    // TODO: rewrite with pure cpp
     py::dict locals;
     locals["archive_filepath"] = archiveFilePath;
     py::exec(R"(
@@ -23,6 +23,7 @@ PhysfsImporter:: PhysfsImporter(std::string archiveFilePath) {
 
 
 py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object> path, std::optional<py::object> target) {
+    // TODO: rewrite with pure cpp
     py::dict locals;
     if (debug) {
         std::cout << "find_spec(fullname='" << fullname << "'";
@@ -97,11 +98,13 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
 
 
 py::none PhysfsImporter::create_module(py::object spec) {
+    // return None to indicate that the spec should create the new module.
     return py::none();
 }
 
 
 void PhysfsImporter::exec_module(py::module_ py_module) {
+    // TODO: rewrite with pure cpp
     auto spec = py_module.attr("__spec__");
     auto module_name = spec.attr("name").cast<py::str>();
     auto module_path = spec.attr("origin").attr("replace")("physfs://", "");
