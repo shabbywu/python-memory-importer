@@ -25,7 +25,7 @@ target_include_directories(memory-importer PUBLIC
   ${PHYSFS_INCLUDE_DIR}
 )
 target_link_libraries(memory-importer PRIVATE
-  PhysFS::PhysFS-static
+  $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>
   pybind11::pybind11
 )
 set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
