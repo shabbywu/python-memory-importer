@@ -26,6 +26,12 @@ before-all = [
   "yum install curl zip unzip tar -y",
 ]
 
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+inherit.before-all = "prepend"
+before-all = [
+  "apk add build-base cmake ninja zip unzip curl git",
+]
 
 [tool.ruff]
 extend-select = [
