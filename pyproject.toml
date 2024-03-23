@@ -6,6 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+environment = {"SYSTEM_VERSION_COMPAT": "0"}
 test-requires = ["pytest"]
 test-command = "pytest {project}/tests/"
 test-skip = "*universal2:arm64"
@@ -13,7 +14,7 @@ test-skip = "*universal2:arm64"
 [tool.cibuildwheel.linux]
 environment = {VCPKG_ROOT="~/.vcpkg/vcpkg" }
 before-all = [
-  "yum install curl zip unzip tar -y",
+  "yum install curl zip unzip tar ninja -y",
   "mkdir ~/.vcpkg",
   "git clone https://github.com/microsoft/vcpkg.git ~/.vcpkg/vcpkg",
   "~/.vcpkg/vcpkg/bootstrap-vcpkg.sh",
