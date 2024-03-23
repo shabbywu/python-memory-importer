@@ -14,6 +14,14 @@ if (DEFINED ENV{VCPKG_ROOT})
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
 endif()
 
+# Enable VCPKG if VCPKG_ROOT defined.
+option(INSTALL_PYTHON "Install Python with vcpkg?" OFF)
+if(INSTALL_PYTHON)
+  list(APPEND VCPKG_MANIFEST_FEATURES "with-python3")
+else()
+  list(APPEND VCPKG_MANIFEST_FEATURES "without-python3")
+endif()
+
 project ("python-memory-importer")
 
 set(CMAKE_CXX_STANDARD 17)
