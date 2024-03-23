@@ -14,11 +14,18 @@ test-skip = "*universal2:arm64"
 [tool.cibuildwheel.linux]
 environment = { VCPKG_ROOT="~/.vcpkg/vcpkg" }
 before-all = [
-  "yum install curl zip unzip tar -y",
   "mkdir ~/.vcpkg",
   "git clone https://github.com/microsoft/vcpkg.git ~/.vcpkg/vcpkg",
   "~/.vcpkg/vcpkg/bootstrap-vcpkg.sh",
 ]
+
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux*"
+inherit.before-all = "prepend"
+before-all = [
+  "yum install curl zip unzip tar -y",
+]
+
 
 [tool.ruff]
 extend-select = [
