@@ -10,10 +10,6 @@ endif()
 find_package(pybind11 CONFIG)
 find_package(PhysFS CONFIG REQUIRED)
 
-# 指定 PhysFS 编译参数
-target_compile_options(PhysFS::PhysFS-static PRIVATE -fPIC)
-
-
 set(MODULE_SOURCE main.cpp
   physfs.shim.cpp physfs.shim.h
   importer.cpp importer.h
@@ -29,7 +25,7 @@ target_include_directories(memory-importer PUBLIC
   ${PHYSFS_INCLUDE_DIR}
 )
 target_link_libraries(memory-importer PRIVATE
-  $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>
+  PhysFS::PhysFS-static
   pybind11::pybind11
 )
 set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
