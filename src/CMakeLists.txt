@@ -25,11 +25,14 @@ target_link_libraries(memory-importer PUBLIC
 set_target_properties(memory-importer PROPERTIES OUTPUT_NAME "memory_importer")
 
 
-# set(STATIC_SOURCE shim.cpp shim.h)
-# pybind11_add_module(memory-importer-static STATIC NO_EXTRAS ${MODULE_SOURCE})
-# set_property(TARGET memory-importer-static PROPERTY CXX_STANDARD 17)
-# target_include_directories(memory-importer-static PUBLIC
-#   ${CMAKE_CURRENT_SOURCE_DIR}/../libs/pybind11/include
-#   ${CMAKE_CURRENT_SOURCE_DIR}/../libs/physfs/src
-#   )
-# target_link_libraries(memory-importer-static PUBLIC physfs-static)
+set(STATIC_SOURCE 
+  physfs.shim.cpp physfs.shim.h
+  importer.cpp importer.h
+)
+pybind11_add_module(memory-importer-static STATIC NO_EXTRAS ${STATIC_SOURCE})
+set_property(TARGET memory-importer-static PROPERTY CXX_STANDARD 17)
+target_include_directories(memory-importer-static PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libs/pybind11/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libs/physfs/src
+  )
+target_link_libraries(memory-importer-static PUBLIC PhysFS::PhysFS-static)

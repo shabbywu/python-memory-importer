@@ -270,8 +270,6 @@ void register_physfs(py::module_ &m) {
     .def_readwrite("filesize", &PHYSFS_Stat::filesize)
     ;
 
-    static auto PHYSFS_FILETYPE_DIRECTORY = PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY;
-
     py::enum_<PHYSFS_FileType>(m, "PHYSFS_FileType", py::module_local())
         .value("PHYSFS_FILETYPE_REGULAR", PHYSFS_FileType::PHYSFS_FILETYPE_REGULAR)
         .value("PHYSFS_FILETYPE_DIRECTORY", PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY)
