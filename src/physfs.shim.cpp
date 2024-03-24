@@ -265,16 +265,19 @@ void register_physfs(py::module_ &m) {
         Read bytes from a PhysicsFS filehandle, read is alias of cat.
     )pbdoc", py::arg("file").none(false));
 
-    py::class_<PHYSFS_Stat>(m, "PHYSFS_Stat")
+    py::class_<PHYSFS_Stat>(m, "PHYSFS_Stat", py::module_local())
     .def_readwrite("filetype", &PHYSFS_Stat::filetype)
     .def_readwrite("filesize", &PHYSFS_Stat::filesize)
     ;
 
-    py::enum_<PHYSFS_FileType>(m, "PHYSFS_FileType")
+    static auto PHYSFS_FILETYPE_DIRECTORY = PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY;
+
+    py::enum_<PHYSFS_FileType>(m, "PHYSFS_FileType", py::module_local())
         .value("PHYSFS_FILETYPE_REGULAR", PHYSFS_FileType::PHYSFS_FILETYPE_REGULAR)
         .value("PHYSFS_FILETYPE_DIRECTORY", PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY)
         .value("PHYSFS_FILETYPE_SYMLINK", PHYSFS_FileType::PHYSFS_FILETYPE_SYMLINK)
-        .value("PHYSFS_FILETYPE_OTHER", PHYSFS_FileType::PHYSFS_FILETYPE_OTHER);
+        .value("PHYSFS_FILETYPE_OTHER", PHYSFS_FileType::PHYSFS_FILETYPE_OTHER)
+    ;
 
 
     py::register_exception<PhysfsRuntimeError>(m, "PhysfsRuntimeError");
