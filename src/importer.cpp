@@ -125,7 +125,7 @@ void PhysfsImporter::exec_module(py::module_ py_module) {
     auto exec = py::module_::import("builtins").attr("exec");
     if (physfs.attr("stat")(module_path).attr("filetype").cast<py::object>() != physfs.attr("PHYSFS_FileType").attr("PHYSFS_FILETYPE_DIRECTORY").cast<py::object>()) {
         auto data = physfs.attr("cat")(module_path).cast<py::bytes>();
-        if (module_path.attr("endswith")(".pyc")) {
+        if (module_path.attr("endswith")(".pyc").cast<bool>()) {
             std::optional<ssize_t> start = 16;
             std::optional<ssize_t> stop;
             std::optional<ssize_t> step;
