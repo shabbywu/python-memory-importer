@@ -20,9 +20,10 @@ struct PhysfsRuntimeError: std::runtime_error {
     typedef std::runtime_error super;
 public:
     PhysfsRuntimeError(std::string message): std::runtime_error (message) {};
+
     const char * what () const throw ()
     {
-    return super::what();
+        return super::what();
     }
 };
 

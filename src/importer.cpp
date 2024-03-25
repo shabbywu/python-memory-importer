@@ -52,12 +52,12 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
     py::str realpath = "";
     py::bool_ is_package = false;
     py::str ext = "";
-    for (auto _ext : {"", ".pyc", ".py"}) {
+    for (auto _ext : {py::str(""), py::str(".pyc"), py::str(".py")}) {
         try
         {
-            auto info = physfs.attr("stat")(module_path + py::str(_ext));
-            realpath = module_path + py::str(_ext);
-            ext = py::str(_ext);
+            auto info = physfs.attr("stat")(module_path + _ext);
+            realpath = module_path + _ext;
+            ext = _ext;
             break;
         }
         catch(const py::error_already_set& e)
@@ -72,13 +72,13 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
         return py::none();
     }
     if (ext == py::str("")) {
-        for (auto _ext : {".pyc", ".py"}) {
+        is_package = true;
+        for (auto _ext : {py::str(".pyc"), py::str(".py")}) {
             try
             {
-                auto info = physfs.attr("stat")(module_path + py::str("/__init__") + py::str(_ext));
-                realpath = module_path + py::str("/__init__") + py::str(_ext);
-                ext = py::str(_ext);
-                is_package = true;
+                auto info = physfs.attr("stat")(module_path + py::str("/__init__") + _ext);
+                realpath = module_path + py::str("/__init__") + _ext;
+                ext = _ext;
                 break;
             }
             catch(const py::error_already_set& e)
@@ -94,12 +94,11 @@ py::object PhysfsImporter::find_spec(py::str fullname, std::optional<py::object>
         "is_package"_a=is_package
     );
     if (is_package) {
-        if (ext == py::str("")) {
-            spec.attr("submodule_search_locations") = py::make_tuple(module_path);
+        if (ext != py::str("")) {
+            spec.attr("__setattr__")("submodule_search_locations", py::make_tuple(module_path));
         } else {
-            spec.attr("submodule_search_locations") = _NamespacePath(module_name, py::make_tuple(module_path), py::cpp_function(&PhysfsImporter::find_spec));
+            spec.attr("__setattr__")("submodule_search_locations", _NamespacePath(module_name, py::make_tuple(module_path), py::cpp_function(&PhysfsImporter::find_spec)));
         }
-        spec.attr("has_location") = true;
     }
     return spec;
 }
@@ -122,7 +121,10 @@ void PhysfsImporter::exec_module(py::module_ py_module) {
     auto physfs = py::module_::import("memory_importer.physfs");
 
     auto exec = py::module_::import("builtins").attr("exec");
-    if (physfs.attr("stat")(module_path).attr("filetype").cast<py::object>() != physfs.attr("PHYSFS_FileType").attr("PHYSFS_FILETYPE_DIRECTORY").cast<py::object>()) {
+
+    std::cout << "exec_module: " << std::string(py::str(spec)) << std::endl;
+    std::cout << "exec_module: " << std::string(py::str(physfs.attr("stat")(module_path).attr("filetype"))) << std::endl;
+    if (physfs.attr("stat")(module_path).attr("filetype").attr("value").cast<int>() != physfs.attr("PHYSFS_FileType").attr("PHYSFS_FILETYPE_DIRECTORY").attr("value").cast<int>()) {
         auto data = physfs.attr("cat")(module_path).cast<py::bytes>();
         if (module_path.attr("endswith")(".pyc").cast<bool>()) {
             std::optional<ssize_t> start = 16;
