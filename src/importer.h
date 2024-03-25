@@ -8,11 +8,9 @@ namespace py = pybind11;
 
 class PhysfsImporter {
     public:
-        py::object ModuleSpecClass;
         py::bool_ debug;
 
         PhysfsImporter() {
-            ModuleSpecClass = py::module_::import("importlib.machinery").attr("ModuleSpec");
         }
         PhysfsImporter(std::string archiveFilePath);
 
@@ -31,7 +29,7 @@ class PhysfsImporter {
         // Finders must return ModuleSpec objects when find_spec() is called. This new method replaces find_module() and
         // find_loader() (in the PathEntryFinder case). If a loader does not have find_spec(), find_module() and
         // find_loader() are used instead, for backward-compatibility.
-        py::object find_spec(py::str fullname, std::optional<py::object> path, std::optional<py::object> target);
+        py::object find_spec(py::str fullname, std::optional<py::object> path, std::optional<py::handle> target);
 
         // PEP-451 loader.create_module() method for the ``sys.meta_path`` hook.
 
