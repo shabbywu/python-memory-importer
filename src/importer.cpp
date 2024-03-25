@@ -127,10 +127,7 @@ void PhysfsImporter::exec_module(py::module_ py_module) {
     if (physfs.attr("stat")(module_path).attr("filetype").attr("value").cast<int>() != physfs.attr("PHYSFS_FileType").attr("PHYSFS_FILETYPE_DIRECTORY").attr("value").cast<int>()) {
         auto data = physfs.attr("cat")(module_path).cast<py::bytes>();
         if (module_path.attr("endswith")(".pyc").cast<bool>()) {
-            std::optional<ssize_t> start = 16;
-            std::optional<ssize_t> stop;
-            std::optional<ssize_t> step;
-            exec(marshal.attr("loads")(data[py::slice(start, stop, step)]).cast<py::object>(), py_module.attr("__dict__"));
+            exec(marshal.attr("loads")(data[py::slice(16, std::nullopt, std::nullopt)]).cast<py::object>(), py_module.attr("__dict__"));
         } else {
             exec(data, py_module.attr("__dict__"));
         }
