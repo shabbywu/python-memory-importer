@@ -19,7 +19,6 @@ PhysfsImporter:: PhysfsImporter(std::string archiveFilePath) {
         if(debug) {
             std::cerr << "Unknown exception occur: " << e.what() << std::endl;
         }
-        throw e;
     }
     physfs.attr("mount")(archiveFilePath);
 }
