@@ -10,9 +10,9 @@ namespace py = pybind11;
 
 
 PYBIND11_MODULE(memory_importer, m) {
-    register_memory_importer(m);
+    memory_importer::register_memory_importer(m);
     py::module mPhysfs = m.def_submodule("physfs", "physfs lib");
-    register_physfs(mPhysfs);
+    memory_importer::physfs::register_physfs(mPhysfs);
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
 #else

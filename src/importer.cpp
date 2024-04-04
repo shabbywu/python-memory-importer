@@ -6,6 +6,7 @@
 
 namespace py = pybind11;
 using namespace pybind11::literals;
+using namespace memory_importer;
 
 
 PhysfsImporter:: PhysfsImporter(std::string archiveFilePath) {

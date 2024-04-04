@@ -7,4 +7,9 @@
 
 
 namespace py = pybind11;
-void register_physfs(py::module_ &m);
+
+namespace memory_importer {
+    namespace physfs {
+        void register_physfs(py::module_ &m);
+    }
+}
