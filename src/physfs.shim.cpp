@@ -1,7 +1,7 @@
 #include "physfs.shim.h"
 #define PHYSFS_IMPL
 #define PHYSFS_PLATFORM_IMPL
-#define PHYSFS_NO_CDROM_SUPPORT
+#define PHYSFS_NO_CDROM_SUPPORT 1
 
 #if ((defined __MACH__) && (defined __APPLE__))
 #include <Foundation/Foundation.h>

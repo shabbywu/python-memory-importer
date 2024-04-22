@@ -9,6 +9,7 @@ set(SOURCE_FILE
 
 if(APPLE)
     set(OTHER_LDFLAGS ${OTHER_LDFLAGS} "-framework IOKit -framework Foundation")
+    # To use .cpp file in ObjC we required to convert that .cpp extension to .mm for ObjC++ compiler only. (thanks Mats for your comment it's helped me a lot.)
     file(COPY_FILE physfs.shim.cpp physfs.shim.mm)
     LIST(APPEND SOURCE_FILE physfs.shim.mm)
 else()
