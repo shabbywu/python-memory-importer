@@ -24186,7 +24186,6 @@ char *__PHYSFS_platformCalcPrefDir(const char *org, const char *app)
 
 #ifndef PHYSFS_PLATFORM_WINRT
 #include <userenv.h>
-#include <shlobj.h>
 #endif
 
 #if !defined(PHYSFS_NO_CDROM_SUPPORT)
