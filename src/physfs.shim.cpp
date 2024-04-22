@@ -1,9 +1,18 @@
 #include "physfs.shim.h"
+#define PHYSFS_IMPL
+#define PHYSFS_PLATFORM_IMPL
+#define PHYSFS_NO_CDROM_SUPPORT
+
+#if ((defined __MACH__) && (defined __APPLE__))
+#include <Foundation/Foundation.h>
+#endif
 
 namespace py = pybind11;
 
 
 namespace memory_importer {
+    #include "miniphysfs.h"
+
     namespace physfs {
         template<typename ... Args>
         std::string string_format( const std::string& format, Args ... args )
