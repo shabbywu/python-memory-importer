@@ -24182,7 +24182,7 @@ char *__PHYSFS_platformCalcPrefDir(const char *org, const char *app)
 #endif
 
 #define WIN32_LEAN_AND_MEAN 1
-#include <windows.h>
+
 
 #ifndef PHYSFS_PLATFORM_WINRT
 #include <userenv.h>
@@ -25587,7 +25587,6 @@ char *__PHYSFS_platformCalcPrefDir(const char *org, const char *app)
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
-#include <windows.h>
 
 /*#include "physfs_internal.h"*/
 

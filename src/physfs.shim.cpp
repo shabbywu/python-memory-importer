@@ -5,6 +5,10 @@
 
 #if ((defined __MACH__) && (defined __APPLE__))
 #include <Foundation/Foundation.h>
+#elif (defined(_MSC_VER) && (_MSC_VER >= 1700) && !_USING_V110_SDK71_)
+#include <windows.h>
+#elif (((defined _WIN32) || (defined _WIN64)) && (!defined __CYGWIN__))
+#include <windows.h>
 #endif
 
 namespace py = pybind11;
