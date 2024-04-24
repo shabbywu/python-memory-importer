@@ -17,7 +17,7 @@ namespace py = pybind11;
 
 
 namespace memory_importer {
-    #include "miniphysfs.h"
+    #include "miniphysfs"
 
     namespace physfs {
         template<typename ... Args>
